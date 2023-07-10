@@ -113,6 +113,6 @@ If you have any questions, issues, or suggestions for improvement,
 feel free to open an issue in the repository,
 or directly reach out to me at wkh16@mail.ustc.edu.cn.
 
-## License
+## 许可证
 
 SeisHandler is licensed under the MIT License. See [LICENSE](LICENSE) file for details.
