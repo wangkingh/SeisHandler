@@ -1,3 +1,5 @@
+*其他语言版本: [English](README.md), [简体中文](README.zh-CN.md)*
+
 # Description of SeisHandler
 
 SeisHandler is a Python package for organizing seismic data.
@@ -71,6 +73,8 @@ for station in my_array.virtual_array:
 ```
 
 ## Example
+
+You can download test data 'example_data.zip'
 
 ```
 from SeisHandler import SeisArray as sa
