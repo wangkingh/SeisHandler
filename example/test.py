@@ -1,5 +1,3 @@
-import sys
-sys.path.append('/mnt/c/Users/think8/Desktop/临时/')
 from SeisHandler import SeisArray as sa
 
 
