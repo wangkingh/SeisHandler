@@ -7,7 +7,7 @@ It does not read any data inside files but matches and organizes
 files by their names. It is a tool for organizing seismic data using
 several specific labels.
 
-# Design philosophy
+# Developer's Zen
 
 It has been a problem that has confused people for a long time about organizing seismic array data. A seismic array is a group of seismometers deployed in a certain area for a time and recording ground motion signals. A seismic array sometimes comprises instruments of the same kind and has the same characteristics.
 
@@ -45,11 +45,12 @@ from SeisHandler import SeisArray as sa
 array_dir = 'path/to/array/dir'
 pattern = '{file}/{path}/{pattern}{with}{label}'
 
-# matching files
+# matching files, threads depict how much porcessor will be used at the same time.
 my_array = sa(array_dir=array_dir, pattern=pattern)
-my_array.match(num_threads=4)
+my_array.match(threads=4)
 
-# filter files by criteria, output is my_array.filtered_files
+# Filter files by criteria, the result is stored in my_array.filtered_files
+# my_array.filtered_files is a List whose members are file infomation dict.
 criteria = { 'label': [label_list],''}
 # e.g 
 ''' 
@@ -59,12 +60,13 @@ criteria = { 'label': [label_list],''}
 my_array.filter(criteria=criteria,threads=4)
 
 
-# group seis files by labels
-# the output is a dictionary, whose key is a comined label
-my_array.group(['station','time'])
+# Group seis info files by labels
+# The output is a dictionary, whose key is a combined label {staiton,time} e.g.
+# The output is my_array.files_group
+my_array.group(['station', 'time'])
 
-# re-orgainze files by labels
-# the output is a multi-level dictionary, whose key is a label
+# re-organize files by labels
+# The output is a multi-level dictionary whose key of every level is a label.
 my_array.organize(label_order=['station','time'],filtered=True,output_type='path')
 for station in my_array.virtual_array:
     for time in my_array.virtual_array[station]:
