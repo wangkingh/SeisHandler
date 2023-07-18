@@ -35,11 +35,12 @@ from SeisHandler import SeisArray as sa
 array_dir = 'path/to/array/dir'
 pattern = '{file}/{path}/{pattern}{with}{label}'
 
-# matching files
+# 根据文件模式匹配文件
 my_array = sa(array_dir=array_dir, pattern=pattern)
-my_array.match(num_threads=4)
+my_array.match(threads=4)
 
-# filter files by criteria, output is my_array.filtered_files
+# 根据准则criteria 筛选文件, 输出是 my_array.filtered_files
+# 输出列表是文件信息列表
 criteria = { 'label': [label_list],''}
 # e.g 
 ''' 
@@ -49,12 +50,14 @@ criteria = { 'label': [label_list],''}
 my_array.filter(criteria=criteria,threads=4)
 
 
-# group seis files by labels
-# the output is a dictionary, whose key is a comined label
-my_array.group(['station','time'])
+# 按照标签对数据目录进行分组
+# 输出是my_array.files_group。 这是一个字典，字典的键是标签组（比如：台站名-时间）
+# 字典的值是列表，每个列表的成员是文件信息字典。
+# filtered选项决定是否对已经过滤之后的文件进行分组
+my_array.group(['station','time']，filtered=True)
 
-# re-orgainze files by labels
-# the output is a multi-level dictionary, whose key is a label
+# 按照标签对数据目录进行虚拟重组
+# 输出是一个多级虚拟目录。每一级的键是指定标签
 my_array.organize(label_order=['station','time'],filtered=True,output_type='path')
 for station in my_array.virtual_array:
     for time in my_array.virtual_array[station]:
@@ -105,7 +108,7 @@ for station in my_array.virtual_array:
 
 ### v0.1.0 (2023-07-10)
 
-- The First version.
+- The First version. 第一版本。
 
 ## 联系方式
 
