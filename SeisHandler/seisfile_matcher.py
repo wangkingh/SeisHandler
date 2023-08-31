@@ -119,8 +119,9 @@ def match_files(file_paths: list, regex_pattern: str, num_threads: int) -> List[
 
         # Iterate through the results
         for result in future_results:
-            if result is not {} and result is not None:
+            if result:  # Filters out None or empty results
                 all_results.append(result)
+
     logger.info("File pattern matching completed.")
     logger.info(f"{len(all_results)} files matched.")
     return all_results

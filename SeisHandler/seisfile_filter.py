@@ -46,18 +46,24 @@ def filter_files(file_list: List[Dict],
     Filters a list of files based on time range and additional criteria.
     Uses multiprocessing for parallel filtering.
     """
-
+    if criteria is None:
+        criteria = {}
+    if not file_list:
+        logger.warning("No files provided for filtering.")
+        return []
     sample_dict = file_list[0]
+
     # Check if criteria is valid
     for key, values in criteria.items():
         if not isinstance(values, list):
             logger.error(f"Criteria values for {key} must be a list")
-            return False
+            return []
 
-    for key in criteria.keys():
-        if key not in sample_dict.keys():
-            logger.error(f"Criteria key {key} not found in file info. Will be deleted.")
-            del criteria[key]
+    keys_to_delete = [key for key in criteria if key not in sample_dict]
+    for key in keys_to_delete:
+        logger.error(f"Criteria key {key} not found in file info. Will be deleted.")
+        del criteria[key]
+
 
     criteria_with_time = None
     criteria_without_time = None
@@ -67,6 +73,7 @@ def filter_files(file_list: List[Dict],
         criteria_without_time = {k: v for k, v in criteria.items() if k != "time"}
 
         if 'time' in criteria:
+            ... # do nothing
             criteria_time = criteria['time']
 
             # Ensure criteria_time is even, if it is odd, discard the last one
@@ -75,6 +82,7 @@ def filter_files(file_list: List[Dict],
 
             # Convert criteria_time to datetime and group into tuple pairs
             criteria_with_time = []
+            
             for i in range(0, len(criteria_time), 2):
                 try:
                     start_time = datetime.strptime(criteria_time[i], "%Y-%m-%d %H:%M:%S")
@@ -93,7 +101,7 @@ def filter_files(file_list: List[Dict],
         # Apply the function to each file info dictionary
         all_results = list(filter(None, executor.map(
             lambda file_info: filter_file(file_info, criteria_with_time, criteria_without_time), file_list)))
-
+        
     logger.info("Finished filtering files.")
     logger.info(f"Filtered {len(all_results)} files.")
     return all_results
