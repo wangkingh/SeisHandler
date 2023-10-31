@@ -26,9 +26,9 @@ def gen_time_from_fields(fields) -> datetime:
     """
     Get the datetime object from the given fields
     """
-    year = fields.get("year")
-    month = fields.get("month")
-    day = fields.get("day")
+    year = fields.get("year","1970")
+    month = fields.get("month","1")
+    day = fields.get("day","1")
     jday = fields.get("jday")
     hour = fields.get("hour", "0")
     minute = fields.get("minute", "0")
@@ -54,18 +54,18 @@ def gen_time_from_fields(fields) -> datetime:
 
     if year and jday:
         time = datetime(year, 1, 1) + timedelta(days=jday - 1, hours=hour, minutes=minute)
-        del fields["year"]
-        del fields["jday"]
-        del fields["hour"]
-        del fields["minute"]
+        # fields.pop('year', None)
+        # fields.pop('jday', None)
+        # fields.pop('hour', None)
+        # fields.pop('minute', None)
         return time
     elif year and month and day:
         time = datetime(year, month, day, hour, minute)
-        del fields["year"]
-        del fields["month"]
-        del fields["day"]
-        del fields["hour"]
-        del fields["minute"]
+        # fields.pop["year"]
+        # fields.pop["month"]
+        # fields.pop["day"]
+        # fields.pop["hour"]
+        # fields.pop["minute"]
         return time
     else:
         raise ValueError("Invalid time fields")
@@ -112,6 +112,7 @@ def match_files(file_paths: list, regex_pattern: str, num_threads: int) -> List[
     all_results = []
     logger.info("Start file pattern matching...")
     # Create a ThreadPoolExecutor
+    
     with ThreadPoolExecutor(max_workers=num_threads) as executor:
 
         # Use 'map' to apply the partial function to each file path

@@ -41,14 +41,19 @@ def create_regex_pattern(pattern: str) -> str:
     # Replace field names with corresponding regex patterns
     for field_name, regex in field_to_regex.items():
         pattern = pattern.replace('{' + field_name + '}', regex)
+    
+    
     # Escape special characters and compile the final regex pattern
     pattern = pattern.replace('.', r'\.')
     pattern = pattern.replace('_', r'\_')
-    pattern = pattern.replace('/', r'\/')
+    pattern = pattern.replace('-', r'\-')
+    
     # Replace '?' (any character wildcard) with regex for any characters except for special characters
     pattern = pattern.replace('{?}', '[^. _/]*')
-    # Replace '*'(any character wildcard) with regex for any characters
-    pattern = pattern.replace('{*}', '.*')
+    
+    #Replace '*'(any character wildcard) with regex for any characters except splitter
+    pattern = pattern.replace('{*}', '\w+')
+    
     return r"{}".format(pattern)
 
 
