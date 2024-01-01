@@ -52,7 +52,7 @@ def create_regex_pattern(pattern: str) -> str:
     pattern = pattern.replace('{?}', '[^. _/]*')
     
     #Replace '*'(any character wildcard) with regex for any characters except splitter
-    pattern = pattern.replace('{*}', '\w+')
+    pattern = pattern.replace('{*}', '.*')
     
     return r"{}".format(pattern)
 
